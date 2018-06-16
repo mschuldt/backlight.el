@@ -176,6 +176,7 @@
     map)
   "Key map used for interactive minibuffer brightness adjustment.")
 
+;;;###autoload
 (defun backlight ()
   "Interactively adjust the backlight brightness in the minibuffer."
   (interactive)
@@ -185,16 +186,19 @@
                                 (floor (backlight--current-percentage)))
                         backlight--minibuffer-keymap))
 
+;;;###autoload
 (defun backlight-inc ()
   "Increment the backlight brightness."
   (interactive)
   (backlight--adjust (backlight--get-inc-amount)))
 
+;;;###autoload
 (defun backlight-dec ()
   "Decrements the backlight brightness."
   (interactive)
   (backlight--adjust (- (backlight--get-inc-amount))))
 
+;;;###autoload
 (defun backlight-set-raw ()
   "Interactively set the raw backlight brightness value."
   (interactive)
