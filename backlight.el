@@ -110,7 +110,8 @@
 (defun backlight--check ()
   "Verify initialization."
   (unless backlight--initialized
-    (assert (backlight--init))))
+    (unless (backlight--init)
+      (error "backlight initialization failed"))))
 
 (defun backlight--current-percentage ()
   "Calculate the current brightness percentage."
