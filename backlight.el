@@ -105,7 +105,8 @@
       (setq backlight--device (car devices))
       (setq backlight--max-brightness (backlight--get "max_brightness"))
       (setq backlight--current-brightness (backlight--get "actual_brightness"))
-      (setq backlight--initialized t))))
+      (setq backlight--initialized t)))
+  backlight--initialized)
 
 (defun backlight--check ()
   "Verify initialization."
