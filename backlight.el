@@ -60,7 +60,7 @@
   :type 'number
   :group 'backlight)
 
-(defcustom backlight-sys-dir "/sys/class/backlightck/"
+(defcustom backlight-sys-dir "/sys/class/backlight/"
   "Location of backlight device files."
   :type 'string
   :group 'backlight)
