@@ -209,7 +209,7 @@
               (format "raw brightness (%s max): "
                       backlight--max-brightness)
               (number-to-string backlight--current-brightness))))
-    (backlight--set-brightness (number-to-string new))))
+    (backlight--set-brightness (string-to-number new))))
 
 (backlight--init)
 
