@@ -142,8 +142,8 @@
             backlight-small-inc-amount
           backlight-large-inc-amount)))))
 
-(defun backlight--adjust (sign)
-  "Adjust the backlight brightness in direction indicated SIGN"
+(defun backlight--adjust (amount)
+  "Adjust the backlight brightness by signed integer AMOUNT"
   (backlight--check)
   (let* (;; detect the case in which we step from one brightness
          ;; region down into another region that has increased
@@ -155,8 +155,7 @@
          (threshold2 (backlight--from-percent 1))
          (was-above-theshold (>= backlight--current-brightness threshold))
          (was-above-theshold2 (>= backlight--current-brightness threshold2))
-         (new (+ backlight--current-brightness
-                 (backlight--get-inc-amount sign))))
+         (new (+ backlight--current-brightness amount)))
     (cond ((and was-above-theshold
                 (< (- new threshold) 1))
            (setq new (1- threshold)))
@@ -170,8 +169,8 @@
 (defun backlight--minibuf-update (&optional decrement)
   "Do a brightess increment, or DECREMENT, and update minibuffer."
   (if decrement
-      (backlight-dec)
-    (backlight-inc))
+      (backlight-dec (backlight--get-inc-amount -1))
+    (backlight-inc (backlight--get-inc-amount 1)))
   (move-beginning-of-line 1)
   (kill-line)
   (insert (backlight--prompt)))
@@ -209,16 +208,16 @@
                         backlight--minibuffer-keymap))
 
 ;;;###autoload
-(defun backlight-inc ()
-  "Increment the backlight brightness."
-  (interactive)
-  (backlight--adjust 1))
+(defun backlight-inc (amount)
+  "Increment the backlight brightness by the specified or default AMOUNT."
+  (interactive (list (backlight--get-inc-amount 1)))
+  (backlight--adjust amount))
 
 ;;;###autoload
-(defun backlight-dec ()
-  "Decrements the backlight brightness."
-  (interactive)
-  (backlight--adjust -1))
+(defun backlight-dec (amount)
+  "Decrements the backlight brightness by the specified or default AMOUNT."
+  (interactive (list (backlight--get-inc-amount -1)))
+  (backlight--adjust amount))
 
 ;;;###autoload
 (defun backlight-set-raw ()
