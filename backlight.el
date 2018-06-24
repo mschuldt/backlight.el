@@ -132,19 +132,20 @@
   "Convert a PERCENT to a brightness value the device accepts."
   (floor (* (/ (* percent 1.0) 100) backlight--max-brightness)))
 
-(defun backlight--get-inc-amount ()
+(defun backlight--get-inc-amount (direction)
   "Return the amount by which to adjust the brightness."
-  (cond ((< (floor (backlight--current-percentage)) 1)
-         nil) ;; single step
-        ((<= (backlight--current-percentage) backlight-threshold)
-         backlight-small-inc-amount)
-        (t backlight-large-inc-amount)))
+  (if (< (floor (backlight--current-percentage)) 1)
+      direction ;; single step
+    (backlight--from-percent
+     (* direction
+        (if (<= (backlight--current-percentage) backlight-threshold)
+            backlight-small-inc-amount
+          backlight-large-inc-amount)))))
 
 (defun backlight--adjust (sign)
   "Adjust the backlight brightness in direction indicated SIGN"
   (backlight--check)
-  (let* ((amount (backlight--get-inc-amount))
-         ;; detect the case in which we step from one brightness
+  (let* (;; detect the case in which we step from one brightness
          ;; region down into another region that has increased
          ;; resolution, such a step must not be done with the
          ;; larger step size from the previous region as the
@@ -154,10 +155,8 @@
          (threshold2 (backlight--from-percent 1))
          (was-above-theshold (>= backlight--current-brightness threshold))
          (was-above-theshold2 (>= backlight--current-brightness threshold2))
-         (new (if (null amount)
-                  (+ backlight--current-brightness sign)
-                (+ backlight--current-brightness
-                   (backlight--from-percent (* amount sign))))))
+         (new (+ backlight--current-brightness
+                 (backlight--get-inc-amount sign))))
     (cond ((and was-above-theshold
                 (< (- new threshold) 1))
            (setq new (1- threshold)))
