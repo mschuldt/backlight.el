@@ -1,4 +1,4 @@
-;;; backlight.el --- backlight brightness adjustment -*- lexical-binding: t -*-
+;;; backlight.el --- backlight brightness adjustment on GNU/Linux -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2018 Michael Schuldt
 
