@@ -22,19 +22,19 @@
 ;; along with GNU Emacs.  If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Commentary:
-;; 
+;;
 ;; A simple utility for setting backlight brightness on some
 ;; GNU/Linux systems using sysfs files.
-;; 
+;;
 ;; This works like most system provided backlight brightness
 ;; controls but allows for increased resolution when the
 ;; brightness percentage nears zero.
-;; 
+;;
 ;; USAGE
-;; 
+;;
 ;;  M-x backlight
 ;;   Then use '<' or '>' to adjust backlight brightness, 'C-g' when done.
-;; 
+;;
 ;;  M-x backlight-set-raw
 ;;   prompts for a value to write directly to the device file.
 
@@ -112,7 +112,7 @@
   "Verify initialization."
   (unless backlight--initialized
     (unless (backlight--init)
-      (error "backlight initialization failed"))))
+      (error "Backlight initialization failed"))))
 
 (defun backlight--current-percentage ()
   "Calculate the current brightness percentage."
@@ -142,8 +142,7 @@
           backlight-large-inc-amount))))
 
 (defun backlight--adjust (amount)
-  "Adjust the backlight brightness by signed integer AMOUNT"
-  (backlight--check)
+  "Adjust the backlight brightness by signed integer AMOUNT."
   (let* (;; detect the case in which we step from one brightness
          ;; region down into another region that has increased
          ;; resolution, such a step must not be done with the
@@ -192,6 +191,7 @@
   "Key map used for interactive minibuffer brightness adjustment.")
 
 (defun backlight--prompt ()
+  "Calculate the backlight prompt string."
   (let ((percent (backlight--current-percentage)))
     (if (< percent 1)
         (format "%%%.2f" percent)
