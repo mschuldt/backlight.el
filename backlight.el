@@ -130,10 +130,7 @@
 (defun backlight--set-brightness (value)
   "Set and verify the backlight brightness to raw VALUE."
   (backlight--set "brightness" value)
-  (let ((actual (backlight--get "actual_brightness")))
-    (when (not (equal actual value))
-      (error "Failed to set backlight brightness"))
-    (setq backlight--current-brightness actual)))
+  (setq backlight--current-brightness (backlight--get "actual_brightness")))
 
 (defun backlight--from-percent (percent)
   "Convert a PERCENT to a brightness value the device accepts."
