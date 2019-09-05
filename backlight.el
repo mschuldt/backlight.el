@@ -65,6 +65,11 @@
   :type 'string
   :group 'backlight)
 
+(defcustom backlight-pref-device nil
+  "Preferred brightness device if multiple are available"
+  :type 'string
+  :group 'backlight)
+
 (defvar backlight--device nil
   "Filename of the backlight device.")
 
@@ -102,12 +107,19 @@
   "Find the backlight device file and read initial values."
   (let ((devices (cddr (and (file-exists-p backlight-sys-dir)
                             (directory-files backlight-sys-dir)))))
-    (when (> (length devices) 1)
-      ;; Don't know if this is actually possible
-      (message "Warning: Multiple backlight devices. Using the first."))
     (if (null devices)
         (message "Error: Unable to find backlight device")
-      (setq backlight--device (car devices))
+      (when (and (null backlight-pref-device)
+		 (> (length devices) 1))
+	(message (concat "Warning: Multiple backlight devices. Using the first, "
+			 (car devices))))
+      (when (and backlight-pref-device
+		 (not (member backlight-pref-device devices)))
+	(message (concat "Warning: Preferred backlight device not found, using "
+			 (car devices))))
+      (if (member backlight-pref-device devices)
+	  (setq backlight--device backlight-pref-device)
+	(setq backlight--device (car devices)))
       (setq backlight--max-brightness (backlight--get "max_brightness"))
       (backlight--read-current-brightness)
       (setq backlight--initialized t)))
