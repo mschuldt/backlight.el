@@ -56,7 +56,7 @@
   :group 'backlight)
 
 (defcustom backlight-threshold 10
-  "Percentage level for using small brightness incrments."
+  "Percentage level for using small brightness increments."
   :type 'number
   :group 'backlight)
 
@@ -182,7 +182,7 @@
     (backlight--set-brightness new)))
 
 (defun backlight--minibuf-update (&optional decrement)
-  "Do a brightess increment, or DECREMENT, and update minibuffer."
+  "Do a brightness increment, or DECREMENT, and update minibuffer."
   (if decrement
       (backlight-dec (backlight--get-inc-amount))
     (backlight-inc (backlight--get-inc-amount)))
