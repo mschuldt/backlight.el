@@ -14,13 +14,20 @@ brightness percentage nears zero.
  =M-x backlight-set-raw=
   prompts for a value to write directly to the device file.
 
-* Setup
+* Add Udev rule
+
+By default, only root can change the brightness.
+A udev rule must be added to allow users in the video group to change the brightness.
+Read more here: https://wiki.archlinux.org/index.php/backlight#ACPI
+
+Run the add_udev_rule.sh script to create the udev file and reload:
+: ./add_udev_rule.sh
+
+OR, create and reload manually:
 
 create file: =/etc/udev/rules.d/backlight.rules=
 with contents:
 
-: ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="acpi_video0", GROUP="video", MODE="0664"
+: ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="acpi_video0", GROUP="video", MODE="then"
 
-then run: =sudo udevadm control --reload-rules && udevadm trigger=
-
-
+ run: =sudo udevadm control --reload-rules && udevadm trigger=
