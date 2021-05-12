@@ -90,7 +90,11 @@
   "Write VALUE to backlight device FILE."
   (with-temp-buffer
     (insert (format "%s" value))
-    (write-region nil nil (backlight--filepath file) nil 'silent)))
+    (condition-case err
+        (write-region nil nil (backlight--filepath file) nil 'silent)
+      (file-error (progn (if (equal (caddr err) "Permission denied")
+                             (message "Permission denied. See README for adding required udev rule.")
+                           (signal (car x) (cdr x))))))))
 
 (defun backlight--get (file)
   "Read value from backlight device FILE."
