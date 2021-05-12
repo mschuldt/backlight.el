@@ -6,6 +6,10 @@ This works like most system provided backlight brightness
 controls but allows for increased resolution when the
 brightness percentage nears zero.
 
+The [[https://gitea.petton.fr/DamienCassou/desktop-environment][desktop-environment]] package provides a more comprehensive set of commands for controlling your desktop.
+It does everything this package does and more. The only difference for controlling the backlight is that
+desktop-environment uses the =brightnessctl=  shell command and backlight.el writes directly to sysfs.
+
 * Usage
 
  =M-x backlight=
